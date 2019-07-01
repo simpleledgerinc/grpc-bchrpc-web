@@ -1,0 +1,32 @@
+{
+  "name": "grpc-bchrpc-web",
+  "version": "0.2.0",
+  "description": "Bitcoin Cash gRPC interface for web clients.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "mkdir -p 'pb' && protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./pb --ts_out=service=true:./pb ./bchrpc.proto"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcramer/grpc-bchrpc-web.git"
+  },
+  "keywords": [
+    "bch"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jcramer/grpc-bchrpc-web/issues"
+  },
+  "homepage": "https://github.com/jcramer/grpc-bchrpc-web#readme",
+  "devDependencies": {
+    "ts-protoc-gen": "^0.10.0",
+    "mkdirp": "^0.5.1"
+  },
+  "dependencies": {
+    "@improbable-eng/grpc-web": "^0.9.6",
+    "@types/google-protobuf": "^3.7.1",
+    "google-protobuf": "^3.2.0"
+  }
+}
