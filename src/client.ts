@@ -17,9 +17,12 @@ export class Client {
         });
     }
 
-    getRawTransaction(hash: string): Promise<bchrpc.GetRawTransactionResponse> {
+    getRawTransaction(hash: string, reverseOrder?: boolean): Promise<bchrpc.GetRawTransactionResponse> {
         let req = new bchrpc.GetRawTransactionRequest();
-        req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+        if(reverseOrder)
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+        else
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))));
         return new Promise((resolve, reject) => {
             this.client.getRawTransaction(req, (err, data) => {
                 if(err!==null) reject(err);
@@ -28,9 +31,12 @@ export class Client {
         });
     }
 
-    getTransaction(hash: string): Promise<bchrpc.GetTransactionResponse> {
+    getTransaction(hash: string, reverseOrder?: boolean): Promise<bchrpc.GetTransactionResponse> {
         let req = new bchrpc.GetTransactionRequest();
-        req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+        if(reverseOrder)
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+        else
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))));
         return new Promise((resolve, reject) => {
             this.client.getTransaction(req, (err, data) => {
                 if(err!==null) reject(err);
@@ -39,9 +45,12 @@ export class Client {
         })
     }
 
-    getRawBlock(hash: string): Promise<bchrpc.GetRawBlockResponse> {
+    getRawBlock(hash: string, reverseOrder?: boolean): Promise<bchrpc.GetRawBlockResponse> {
         let req = new bchrpc.GetRawBlockRequest();
-        req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+        if(reverseOrder)
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+        else
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))));
         return new Promise((resolve, reject) => {
             this.client.getRawBlock(req, (err, data) => {
                 if(err!==null) reject(err);
