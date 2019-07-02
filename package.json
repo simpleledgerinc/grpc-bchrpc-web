@@ -1,6 +1,6 @@
 {
   "name": "grpc-bchrpc-web",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Bitcoin Cash gRPC interface for web clients.",
   "main": "index.js",
   "files": [

@@ -45,6 +45,17 @@ export class Client {
         })
     }
 
+    getAddressUtxos(address: string): Promise<bchrpc.GetAddressUnspentOutputsResponse> {
+        let req = new bchrpc.GetAddressUnspentOutputsRequest()
+        req.setAddress(address);
+        return new Promise((resolve, reject) => {
+            this.client.getAddressUnspentOutputs(req, (err, data) => {
+                if(err!==null) reject(err);
+                else resolve(data!);
+            })
+        })
+    }
+
     getRawBlock(hash: string, reverseOrder?: boolean): Promise<bchrpc.GetRawBlockResponse> {
         let req = new bchrpc.GetRawBlockRequest();
         if(reverseOrder)
