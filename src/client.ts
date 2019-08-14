@@ -1,10 +1,15 @@
 import * as bchrpc from '../pb/bchrpc_pb'
 import * as bchrpc_pb_service from '../pb/bchrpc_pb_service'
 
-export class Client {
+export class GrpcClient {
     client: bchrpc_pb_service.bchrpcClient;
 
-    constructor(url="https://bchd.greyh.at:8335") {
+    constructor({ url = undefined, testnet = false }: { url?: string; testnet?: boolean; } = {}) {
+        if(!url && !testnet) {
+            url = "https://bchd.greyh.at:8335";
+        } else if(!url) {
+            url = "https://bchd-testnet.greyh.at:18335";
+        }
         this.client = new bchrpc_pb_service.bchrpcClient(url)
     }
 
@@ -17,7 +22,7 @@ export class Client {
         });
     }
 
-    getRawTransaction(hash: string, reverseOrder?: boolean): Promise<bchrpc.GetRawTransactionResponse> {
+    getRawTransaction({ hash, reverseOrder }: { hash: string; reverseOrder?: boolean; }): Promise<bchrpc.GetRawTransactionResponse> {
         let req = new bchrpc.GetRawTransactionRequest();
         if(reverseOrder)
             req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
@@ -31,7 +36,7 @@ export class Client {
         });
     }
 
-    getTransaction(hash: string, reverseOrder?: boolean): Promise<bchrpc.GetTransactionResponse> {
+    getTransaction({ hash, reverseOrder }: { hash: string; reverseOrder?: boolean; }): Promise<bchrpc.GetTransactionResponse> {
         let req = new bchrpc.GetTransactionRequest();
         if(reverseOrder)
             req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
@@ -56,7 +61,7 @@ export class Client {
         })
     }
 
-    getRawBlock(hash: string, reverseOrder?: boolean): Promise<bchrpc.GetRawBlockResponse> {
+    getRawBlock({ hash, reverseOrder }: { hash: string; reverseOrder?: boolean; }): Promise<bchrpc.GetRawBlockResponse> {
         let req = new bchrpc.GetRawBlockRequest();
         if(reverseOrder)
             req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());

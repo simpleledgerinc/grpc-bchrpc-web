@@ -8,6 +8,26 @@
 2. `npm install`
 3. `npm run build && tsc`
 
-## Public Full gRPC Servers
+## Example usage
+
+In this simple example we create a new client that connects to `bchd.greyh.at:8335` by default.  We call `getRawTransaction` and then print the results to the console.  We use `reverseOrder` in call to getRawTransaction because BCHD works with transaction hash not the conventional reversed hash/txid.
+
+```ts
+let grpc = new GrpcClient();
+let txid = "11556da6ee3cb1d14727b3a8f4b37093b6fecd2bc7d577a02b4e98b7be58a7e8";
+let res = await grpc.getRawTransaction({ hash: txid, reverseOrder: true });
+console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
+```
+
+## BCHD Full Nodes w/ gRPC
 * https://bchd.greyh.at:8335
+* https://bchd.imaginary.cash:8335
 * https://bchd-testnet.greyh.at:18335
+
+## Change Log
+
+### 0.6.0
+- Update `bchrpc.proto` per BCHD commit [6f19bfe](https://github.com/gcash/bchd/blob/master/bchrpc/bchrpc.proto)
+- Use destructured params in Client constructor
+- Moved tsc to the end of `npm run build` script
+- Renamed Client to GrpcClient to be consistent with `grpc-bchrpc-node`
