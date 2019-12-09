@@ -94,4 +94,13 @@ export class GrpcClient {
             })
         })
     }
+
+    subscribeBlocks(): bchrpc_pb_service.ResponseStream<bchrpc.BlockNotification> {
+        return this.client.subscribeBlocks(new bchrpc.SubscribeBlocksRequest);
+    }
+
+    subscribeTransactions(): bchrpc_pb_service.ResponseStream<bchrpc.TransactionNotification> {
+        return this.client.subscribeTransactions(new bchrpc.SubscribeTransactionsRequest);
+    }
+
 }
