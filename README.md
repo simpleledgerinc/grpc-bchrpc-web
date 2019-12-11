@@ -26,6 +26,13 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 
 ## Change Log
 
+### 0.7.1
+- Add typscript to dev dependencies
+
+### 0.7.0
+- Add `getAddressTransactions` method
+- Support block hash in `GetBlockInfo` method
+
 ### 0.6.1
 - Update `bchrpc.proto` per BCHD commit [31e5e87](https://github.com/gcash/bchd/blob/master/bchrpc/bchrpc.proto)
 
