@@ -101,6 +101,31 @@ export class GrpcClient {
         })
     }
 
+    getBlock({ index, hash, reversedHashOrder, fullTransactions }:
+        { index?: number, hash?: string, reversedHashOrder?: boolean,
+            fullTransactions?: boolean }): Promise<bchrpc.GetBlockResponse> {
+        const req = new bchrpc.GetBlockRequest();
+        if (index !== null && index !== undefined) {
+            req.setHeight(index);
+        } else if (hash) {
+            if (reversedHashOrder) {
+                req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+            } else {
+                req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))));
+            }
+        } else {
+            throw Error("No index or hash provided for block");
+        }
+        if (fullTransactions) {
+            req.setFullTransactions(true);
+        }
+        return new Promise((resolve, reject) => {
+            this.client.getBlock(req, (err, data) => {
+                if (err !== null) { reject(err); } else { resolve(data!); }
+            });
+        });
+    }
+
     getBlockInfo({ index, hash, reversedHashOrder }:
         { index?: number, hash?: string, reversedHashOrder?: boolean }): Promise<bchrpc.GetBlockInfoResponse> {
         const req = new bchrpc.GetBlockInfoRequest();

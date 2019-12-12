@@ -26,6 +26,9 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 
 ## Change Log
 
+### 0.8.0
+- Add `getBlock` methood
+
 ### 0.7.2
 - Add all available parameters to `GetAddressTransactionsRequest`
 
