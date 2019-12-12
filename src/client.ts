@@ -50,8 +50,24 @@ export class GrpcClient {
         })
     }
 
-    getAddressTransactions({ address }: { address: string }): Promise<bchrpc.GetAddressTransactionsResponse> {
+    getAddressTransactions({ address, nbSkip, nbFetch, height, hash, reversedHashOrder }: { address: string, nbSkip?: number, nbFetch?: number, height?: number, hash?: string, reversedHashOrder?: boolean }): Promise<bchrpc.GetAddressTransactionsResponse> {
         const req = new bchrpc.GetAddressTransactionsRequest();
+        if (nbSkip) {
+            req.setNbSkip(nbSkip);
+        }
+        if (nbFetch) {
+            req.setNbFetch(nbFetch);
+        }
+        if (height) {
+            req.setHeight(height);
+        }
+        if (hash) {
+            if(reversedHashOrder) {
+                req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))).reverse());
+            } else {
+                req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16))));
+            }
+        }
         req.setAddress(address);
         return new Promise((resolve, reject) => {
             this.client.getAddressTransactions(req, (err, data) => {
@@ -85,7 +101,7 @@ export class GrpcClient {
         })
     }
 
-    public getBlockInfo({ index, hash, reversedHashOrder }:
+    getBlockInfo({ index, hash, reversedHashOrder }:
         { index?: number, hash?: string, reversedHashOrder?: boolean }): Promise<bchrpc.GetBlockInfoResponse> {
         const req = new bchrpc.GetBlockInfoRequest();
         if (index !== null && index !== undefined) { req.setHeight(index); } else if (hash) {

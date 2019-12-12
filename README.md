@@ -26,6 +26,9 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 
 ## Change Log
 
+### 0.7.2
+- Add all available parameters to `GetAddressTransactionsRequest`
+
 ### 0.7.1
 - Add typscript to dev dependencies
 
