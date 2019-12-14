@@ -26,6 +26,10 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 
 ## Change Log
 
+### 0.9.0
+- Add `submitTransaction` method
+- Bump `max_receive_message_length` to unlimited
+
 ### 0.8.0
 - Add `getBlock` methood
 

@@ -4,11 +4,16 @@ import * as bchrpc_pb_service from '../pb/bchrpc_pb_service'
 export class GrpcClient {
     client: bchrpc_pb_service.bchrpcClient;
 
-    constructor({ url = undefined, testnet = false }: { url?: string; testnet?: boolean; } = {}) {
+    constructor({ url = undefined, testnet = false, options }: { url?: string; testnet?: boolean; options?: object } = {}) {
         if(!url && !testnet) {
             url = "https://bchd.greyh.at:8335";
         } else if(!url) {
             url = "https://bchd-testnet.greyh.at:18335";
+        }
+        if (!options) {
+            options = {
+                "grpc.max_receive_message_length": -1, // unlimited
+            };
         }
         this.client = new bchrpc_pb_service.bchrpcClient(url)
     }
@@ -152,5 +157,16 @@ export class GrpcClient {
                 else resolve(data!);
             })
         })
+    }
+
+    public submitTransaction(txn: Uint8Array): Promise<bchrpc.SubmitTransactionResponse> {
+        let txnBase64: string;
+        const req = new bchrpc.SubmitTransactionRequest();
+        req.setTransaction(txn);
+        return new Promise((resolve, reject) => {
+            this.client.submitTransaction(req, (err, data) => {
+                if (err !== null) { reject(err); } else { resolve(data!); }
+            });
+        });
     }
 }
