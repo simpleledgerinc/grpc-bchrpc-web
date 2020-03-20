@@ -26,6 +26,12 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 
 ## Change Log
 
+### 0.10.0
+- Add `subscribeTransactions` and `subscribeBlocks` methods
+- Update `submitTransaction` to match node version
+- Add unit tests
+- Add coverage for unit tests
+
 ### 0.9.0
 - Add `submitTransaction` method
 - Bump `max_receive_message_length` to unlimited
