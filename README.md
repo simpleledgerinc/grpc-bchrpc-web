@@ -1,7 +1,7 @@
 # BCH gRPC Interface for Web Clients
 
 ## Install
-`npm install grpc-bchrpc-web --save` (see [node.js](https://github.com/jcramer/grpc-bchrpc-node) version)
+`npm i grpc-bchrpc-web`
 
 ## Build from source (from `./bchrpc.proto`)
 1. Install Protocol Compiler from: https://github.com/protocolbuffers/protobuf
@@ -24,7 +24,28 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 * https://bchd.imaginary.cash:8335
 * https://bchd-testnet.greyh.at:18335
 
+## Use with node.js
+
+This package can be used with node.js, simply use the following imports:
+
+```
+// Do this first, so that we can call this library from node.
+import { grpc } from "@improbable-eng/grpc-web";
+import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
+grpc.setDefaultTransport(NodeHttpTransport());
+
+import { GrpcClient } from 'grpc-bchrpc-web';
+let client = new GrpcClient();
+
+// your code
+...
+
+```
+
 ## Change Log
+
+### 0.10.1
+- Hot fix update in tsconfig
 
 ### 0.10.0
 - Add `subscribeTransactions` and `subscribeBlocks` methods
