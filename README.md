@@ -28,8 +28,21 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 
 ## Use with node.js
 
-This package can be used with node.js, simply use the following imports:
+This package can be used with node.js by including DOM library imports with a compiler (e.g., TypeScript):
 
+First, add "DOM" as a library to compile the source with, for example, in your `tsconfig.json`:
+
+```
+{
+  "compilerOptions": {
+    "lib": ["es2015", "es2017", "esnext", "DOM"],
+    ...
+  }
+  ...
+}
+```
+
+Next, add the imports to your code:
 ```
 // Do this first, so that we can call this library from node.
 import { grpc } from "@improbable-eng/grpc-web";
