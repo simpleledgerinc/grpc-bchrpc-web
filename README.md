@@ -1,4 +1,6 @@
-# BCH gRPC Interface for Web Clients
+# BCHD gRPC Client for Web and node.js
+
+This pacakge provides a client for connecting to BCHD from either web browser or node.js.  To use with node.js see extra requirements below.
 
 ## Install
 `npm i grpc-bchrpc-web`
@@ -43,6 +45,10 @@ let client = new GrpcClient();
 ```
 
 ## Change Log
+
+### 0.10.2
+- Add method `getUnspentOutput`
+- Some linting
 
 ### 0.10.1
 - Hot fix update in tsconfig

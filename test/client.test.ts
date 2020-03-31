@@ -10,7 +10,7 @@ import { GrpcClient } from "../src/client";
 
 const client = new GrpcClient();
 
-describe("grpc-bchrpc-node", () => {
+describe("grpc-bchrpc-web", () => {
 
     it("getRawTransaction returns the transaction (README example)", async () => {
         const txid = "11556da6ee3cb1d14727b3a8f4b37093b6fecd2bc7d577a02b4e98b7be58a7e8";
