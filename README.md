@@ -22,13 +22,18 @@ console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 ```
 
 ## BCHD Full Nodes w/ gRPC
+Mainnet:
 * https://bchd.greyh.at:8335
 * https://bchd.imaginary.cash:8335
+* https://bchd.fountainhead.cash:443
+
+Testnet:
+* https://bchd.greyh.at:18335
 * https://bchd-testnet.greyh.at:18335
 
 ## Use with node.js
 
-This package can be used with node.js by including DOM library imports with a compiler (e.g., TypeScript):
+This package can be used with node.js by including DOM library imports with a compiler (e.g., TypeScript).  The BCHD instance needs to be behind a reverse proxy server (e.g., `https://bchd.greyh.at:8335`), connecting to a local instance of BCHD requires use of the `grpc-bchrpc-node` npm package.
 
 First, add "DOM" as a library to compile the source with, for example, in your `tsconfig.json`:
 
@@ -45,19 +50,19 @@ First, add "DOM" as a library to compile the source with, for example, in your `
 Next, add the imports to your code:
 ```
 // Do this first, so that we can call this library from node.
-import { grpc } from "@improbable-eng/grpc-web";
-import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
+import { grpc, GrpcClient, NodeHttpTransport } from "grpc-bchrpc-web";
 grpc.setDefaultTransport(NodeHttpTransport());
 
-import { GrpcClient } from 'grpc-bchrpc-web';
 let client = new GrpcClient();
-
-// your code
+// calls to your client
 ...
 
 ```
 
 ## Change Log
+
+### 0.10.4
+- Updates for node.js transport 
 
 ### 0.10.3
 - Add method `getRawMempool`

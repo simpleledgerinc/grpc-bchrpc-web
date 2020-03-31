@@ -1,14 +1,8 @@
-import { grpc } from "@improbable-eng/grpc-web";
-import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
-
-// Do this first, so that we can call this library from node.
-grpc.setDefaultTransport(NodeHttpTransport());
-
 import { Buffer } from "buffer";
 import { assert } from "chai";
-import { GrpcClient } from "../src/client";
-
-const client = new GrpcClient();
+import { grpc, GrpcClient, NodeHttpTransport } from "../index";
+grpc.setDefaultTransport(NodeHttpTransport());
+const client = new GrpcClient({});
 
 describe("grpc-bchrpc-web", () => {
 
