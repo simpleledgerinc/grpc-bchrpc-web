@@ -28,6 +28,16 @@ export class GrpcClient {
         });
     }
 
+    public getRawMempool(): Promise<bchrpc.GetMempoolResponse> {
+        const req = new bchrpc.GetMempoolRequest();
+        req.setFullTransactions(false);
+        return new Promise((resolve, reject) => {
+            this.client.getMempool(req, (err, data) => {
+                if (err !== null) { reject(err); } else { resolve(data!); }
+            });
+        });
+    }
+
     public getRawTransaction({ hash, reverseOrder, reversedHashOrder }:
         { hash: string; reverseOrder?: boolean; reversedHashOrder?: boolean }):
         Promise<bchrpc.GetRawTransactionResponse> {

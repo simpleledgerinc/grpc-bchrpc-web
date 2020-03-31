@@ -59,6 +59,9 @@ let client = new GrpcClient();
 
 ## Change Log
 
+### 0.10.3
+- Add method `getRawMempool`
+
 ### 0.10.2
 - Add method `getUnspentOutput`
 - Some linting
