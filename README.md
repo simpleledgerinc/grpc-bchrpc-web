@@ -1,14 +1,27 @@
-# BCHD gRPC Client for Web and node.js
+# BCHD gRPC Client for web and node.js**
 
-This pacakge provides a client for connecting to BCHD from either web browser or node.js.  To use with node.js see extra requirements below.
+This package provides a simple gRPC client for connecting web and node.js applications to a [BCHD](https://bchd.cash) full node.  Example usage can be found at https://bchd.fountainhead.cash.
+
+** - For node.js applications that need to connect to a local BCHD instance you need to use the `grpc-bchrpc-node`  npm package.  This package can only be used with node.js applications that will connect to BCHD instances located behind a reverse proxy server via https (e.g., https://bchd.fountainhead.cash:443)
+
+
 
 ## Install
+
+#### npm
 `npm i grpc-bchrpc-web`
+
+#### web browser
+`<script src='https://unpkg.com/bchrpc'></script>`
+
+
 
 ## Build from source (from `./bchrpc.proto`)
 1. Install Protocol Compiler from: https://github.com/protocolbuffers/protobuf
 2. `npm install`
 3. `npm run build && tsc`
+
+
 
 ## Example usage
 
@@ -21,7 +34,10 @@ let res = await grpc.getRawTransaction({ hash: txid, reverseOrder: true });
 console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 ```
 
+
+
 ## BCHD Full Nodes w/ gRPC
+
 Mainnet:
 * https://bchd.greyh.at:8335
 * https://bchd.imaginary.cash:8335
@@ -30,6 +46,8 @@ Mainnet:
 Testnet:
 * https://bchd.greyh.at:18335
 * https://bchd-testnet.greyh.at:18335
+
+
 
 ## Use with node.js
 
@@ -59,7 +77,12 @@ let client = new GrpcClient();
 
 ```
 
+
+
 ## Change Log
+
+### 0.10.5
+- Add unpkg support for web browsers, updated readme instructions.
 
 ### 0.10.4
 - Updates for node.js transport 
