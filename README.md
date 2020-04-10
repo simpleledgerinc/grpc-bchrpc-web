@@ -18,8 +18,8 @@ This package provides a simple gRPC client for connecting web and node.js applic
 
 ## Build from source (from `./bchrpc.proto`)
 1. Install Protocol Compiler from: https://github.com/protocolbuffers/protobuf
-2. `npm install`
-3. `npm run build && tsc`
+2. `npm i`
+3. `npm run build`
 
 
 

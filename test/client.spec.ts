@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 import { assert } from "chai";
-import { grpc, GrpcClient, NodeHttpTransport } from "../index";
+import { grpc, GrpcClient, NodeHttpTransport } from "../src/index";
 grpc.setDefaultTransport(NodeHttpTransport());
 const client = new GrpcClient({});
 
