@@ -1,15 +1,15 @@
-# BCHD gRPC Client for web and node.js**
+# A BCHD gRPC client for the web
 
-This package provides a simple gRPC client for connecting web and node.js applications to a [BCHD](https://bchd.cash) full node.  Example usage can be found at https://bchd.fountainhead.cash.
+This package provides a gRPC client for connecting to [BCHD](https://bchd.cash) from web applications.  Example usage can be found at https://bchd.fountainhead.cash.  SLP support is provided when the full node has SLP index enabled, which is currently under development [here](https://github.com/simpleledgerinc/bchd).
 
-** - For node.js applications that need to connect to a local BCHD instance you need to use the `grpc-bchrpc-node`  npm package.  This package can only be used with node.js applications that will connect to BCHD instances located behind a reverse proxy server via https (e.g., https://bchd.fountainhead.cash:443)
+** - For node.js applications that need to connect to a local BCHD instance you need to use the `grpc-bchrpc-node` npm package.
 
 
 
 ## Install
 
 #### npm
-`npm i grpc-bchrpc-web`
+`$ npm i grpc-bchrpc-web`
 
 #### web browser
 `<script src='https://unpkg.com/bchrpc'></script>`
@@ -25,12 +25,12 @@ This package provides a simple gRPC client for connecting web and node.js applic
 
 ## Example usage
 
-In this simple example we create a new client that connects to `bchd.greyh.at:8335` by default.  We call `getRawTransaction` and then print the results to the console.  We use `reverseOrder` in call to getRawTransaction because BCHD works with transaction hash not the conventional reversed hash/txid.
+In this simple example we create a new client that connects to `bchd.greyh.at:8335` and calls the `getRawTransaction` rpc endpoint and prints the result to the console.  We use `reversedHashOrder: true` to automatically reverse the txid endianness because BCHD expects to receive transaction hashes without endianness reversed.
 
 ```ts
 let grpc = new GrpcClient();
 let txid = "11556da6ee3cb1d14727b3a8f4b37093b6fecd2bc7d577a02b4e98b7be58a7e8";
-let res = await grpc.getRawTransaction({ hash: txid, reverseOrder: true });
+let res = await grpc.getRawTransaction({ hash: txid, reversedHashOrder: true });
 console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 ```
 
@@ -81,6 +81,10 @@ let client = new GrpcClient();
 
 ## Change Log
 
+#### 0.11.0
+- This update includes support for the new SLP index feature currently being tested for BCHD.  When the BCHD SLP index is enabled the full node will prevent accidental SLP token burns by rejecting invalid SLP transactions from connected gRPC clients.  This feature caused a minor change in the usage of the `SubmitTransaction()` method, where `skipSlpValidityChecks: true` needs to be added as a parameter if the BCHD full node does not have SLP indexing enabled.
+- Breaking change: Replaced `reverseHash` parameter with `reversedHashOrder`.
+
 ### 0.10.5
 - Add unpkg support for web browsers, updated readme instructions.
 
@@ -102,29 +106,3 @@ let client = new GrpcClient();
 - Update `submitTransaction` to match node version
 - Add unit tests
 - Add coverage for unit tests
-
-### 0.9.0
-- Add `submitTransaction` method
-- Bump `max_receive_message_length` to unlimited
-
-### 0.8.0
-- Add `getBlock` methood
-
-### 0.7.2
-- Add all available parameters to `GetAddressTransactionsRequest`
-
-### 0.7.1
-- Add typscript to dev dependencies
-
-### 0.7.0
-- Add `getAddressTransactions` method
-- Support block hash in `GetBlockInfo` method
-
-### 0.6.1
-- Update `bchrpc.proto` per BCHD commit [31e5e87](https://github.com/gcash/bchd/blob/master/bchrpc/bchrpc.proto)
-
-### 0.6.0
-- Update `bchrpc.proto` per BCHD commit [6f19bfe](https://github.com/gcash/bchd/blob/master/bchrpc/bchrpc.proto)
-- Use destructured params in Client constructor
-- Moved tsc to the end of `npm run build` script
-- Renamed Client to GrpcClient to be consistent with `grpc-bchrpc-node`
