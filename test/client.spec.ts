@@ -357,7 +357,7 @@ describe("grpc-bchrpc-web", () => {
         const script = Buffer.from("6a04534c50000101044d494e5420ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4c00080000000000000064", "hex");
         const resp = await client.getParsedSlpScript(script);
         const tokenID = Buffer.from(resp.getTokenId());
-        assert.equal(resp.getV1Mint()!.getMintAmount(), 100);
+        assert.equal(resp.getV1Mint()!.getMintAmount(), "100");
         assert.equal(tokenID.toString("hex"), "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
     });
 
@@ -389,7 +389,7 @@ describe("grpc-bchrpc-web", () => {
                     }
                 } else {
                     const resp = await client.getParsedSlpScript(script);
-                    const parsedType = resp.getType();
+                    const parsedType = resp.getSlpAction();
                     assert.equal(parsedType > 0, true);
                 }
             });

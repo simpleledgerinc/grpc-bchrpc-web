@@ -1,6 +1,6 @@
 {
   "name": "grpc-bchrpc-web",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "BCHD gRPC client for web and node.js.",
   "main": "dist/index.js",
   "files": [
