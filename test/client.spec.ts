@@ -7,7 +7,9 @@ grpc.setDefaultTransport(NodeHttpTransport());
 
 const scriptUnitTestData: SlpMsgTest[] = require("slp-unit-test-data/script_tests.json");
 
-const client = new GrpcClient({url: "https://bchd.ny1.simpleledger.io"});
+// @ts-ignore
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+const client = new GrpcClient({url: "https://localhost:8335" }); //bchd.ny1.simpleledger.io"});
 
 describe("grpc-bchrpc-web", () => {
 
@@ -461,7 +463,7 @@ expectedParsingErrorsFromGoSlp.set("decimals string length must be 1", [
     "(must be invalid: wrong size): Genesis with 0-byte decimals",
     "(must be invalid: wrong size): Genesis with 2-byte decimals",
 ]);
-expectedParsingErrorsFromGoSlp.set("documentHash must be size 0 or 32", [
+expectedParsingErrorsFromGoSlp.set("documentHash string length must be 0 or 32", [
     "(must be invalid: wrong size): Genesis with 31-byte dochash",
     "(must be invalid: wrong size): Genesis with 33-byte dochash",
     "(must be invalid: wrong size): Genesis with 64-byte dochash",
@@ -484,7 +486,7 @@ expectedParsingErrorsFromGoSlp.set("amount string size not 8 bytes", [
     "(must be invalid: wrong size): SEND with a 0-byte amount",
     "",
 ]);
-expectedParsingErrorsFromGoSlp.set("decimals biger than 9", [
+expectedParsingErrorsFromGoSlp.set("decimals bigger than 9", [
     "(must be invalid: bad value): Genesis with decimals=10",
 ]);
 expectedParsingErrorsFromGoSlp.set("NFT1 child token must not have a minting baton", [
@@ -496,10 +498,10 @@ expectedParsingErrorsFromGoSlp.set("NFT1 child token must have divisibility set 
 expectedParsingErrorsFromGoSlp.set("NFT1 child token must have quantity of 1", [
     "(must be invalid: bad value): NFT1 Child Genesis with quanitity!==1",
 ]);
-expectedParsingErrorsFromGoSlp.set("NFT1 Child cannot have MINT transaction type.", [
+expectedParsingErrorsFromGoSlp.set("nft1 child cannot have mint transaction type", [
     "(must be invalid: impossible state): typical MINT without baton for token_type=41",
 ]);
-expectedParsingErrorsFromGoSlp.set("mintBatonVout must be at least 2", [
+expectedParsingErrorsFromGoSlp.set("mintBatonVout value must be at least 2", [
     "(must be invalid: bad value): Genesis with mint_baton_vout=1",
     "(must be invalid: bad value): Genesis with mint_baton_vout=0",
     "(must be invalid: bad value): MINT with mint_baton_vout=1",

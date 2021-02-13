@@ -382,11 +382,13 @@ export class GrpcClient {
         txnHex,
         txn,
         requiredSlpBurns,
+        disableSlpErrors
     }: {
         txnBuf?: Buffer,
         txnHex?: string,
         txn?: Uint8Array,
         requiredSlpBurns?: bchrpc.SlpRequiredBurn[],
+        disableSlpErrors?: boolean
     } = {}): Promise<bchrpc.CheckSlpTransactionResponse> {
         let tx: string|Uint8Array;
         const req = new bchrpc.CheckSlpTransactionRequest();
@@ -401,7 +403,9 @@ export class GrpcClient {
             throw Error("Most provide either Hex string, Buffer, or Uint8Array");
         }
 
-        if (requiredSlpBurns) {
+        if (disableSlpErrors) {
+            req.setDisableSlpBurnErrors(true);
+        } else if (requiredSlpBurns) {
             for (const burn of requiredSlpBurns) {
                 req.addRequiredSlpBurns(burn);
             }
@@ -481,6 +485,32 @@ export class GrpcClient {
                 req.setSlpOpreturnScript(script);
             }
             this.client.getParsedSlpScript(req, (err, data) => {
+                if (err !== null) { reject(err); } else { resolve(data!); }
+            });
+        });
+    }
+
+    public getGraphSearchFor({ hash, reversedHashOrder, knownValidHashes }:
+        { hash: string, reversedHashOrder: boolean, knownValidHashes?: string[] }): Promise<bchrpc.GetSlpGraphSearchResponse> {
+        const req = new bchrpc.GetSlpGraphSearchRequest();
+        if (reversedHashOrder) {
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))).reverse());
+        } else {
+            req.setHash(new Uint8Array(hash.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))));
+        }
+        if (knownValidHashes) {
+            if (reversedHashOrder) {
+                knownValidHashes.forEach((hash) => {
+                    req.addValidHashes(new Uint8Array(hash.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))).reverse());
+                });
+            } else {
+                knownValidHashes.forEach((hash) => {
+                    req.addValidHashes(new Uint8Array(hash.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))));
+                });
+            }
+        }
+        return new Promise((resolve, reject) => {
+            this.client.getSlpGraphSearch(req, (err, data) => {
                 if (err !== null) { reject(err); } else { resolve(data!); }
             });
         });
