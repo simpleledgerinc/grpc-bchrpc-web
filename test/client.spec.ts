@@ -94,15 +94,15 @@ describe("grpc-bchrpc-web", () => {
         assert.equal(totalAmtIn.cmp(totalAmtOut), 0);
 
         // check token metadata
-        assert.equal(Buffer.from(res.getTokenMetadata()!.getType1()!.getTokenName()!).toString("utf8"), "Spice");
-        assert.equal(Buffer.from(res.getTokenMetadata()!.getType1()!.getTokenTicker()).toString("utf8"), "SPICE");
-        assert.equal(res.getTokenMetadata()!.getType1()!.getDecimals()!, 8);
-        assert.equal(Buffer.from(res.getTokenMetadata()!.getType1()!.getTokenDocumentUrl()).toString("utf8"), "spiceslp@gmail.com");
+        assert.equal(Buffer.from(res.getTokenMetadata()!.getV1Fungible()!.getTokenName()!).toString("utf8"), "Spice");
+        assert.equal(Buffer.from(res.getTokenMetadata()!.getV1Fungible()!.getTokenTicker()).toString("utf8"), "SPICE");
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getDecimals()!, 8);
+        assert.equal(Buffer.from(res.getTokenMetadata()!.getV1Fungible()!.getTokenDocumentUrl()).toString("utf8"), "spiceslp@gmail.com");
         assert.equal(Buffer.from(res.getTokenMetadata()!.getTokenId_asU8()!).toString("hex"), "4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf");
 
         // verify current Mint baton txid / vout
-        assert.equal(res.getTokenMetadata()!.getType1()!.getMintBatonTxid(), "");
-        assert.equal(res.getTokenMetadata()!.getType1()!.getMintBatonVout(), 0);
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getMintBatonHash(), "");
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getMintBatonVout(), 0);
     });
 
     it("getTransaction - max uint64 SlpToken", async () => {
@@ -122,8 +122,8 @@ describe("grpc-bchrpc-web", () => {
         assert.equal(totalOut.cmp(Big("18446744073709551615")), 0);
 
         // verify Mint baton txid / vout
-        assert.equal(res.getTokenMetadata()!.getType1()!.getMintBatonTxid(), "");
-        assert.equal(res.getTokenMetadata()!.getType1()!.getMintBatonVout(), 0);
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getMintBatonHash(), "");
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getMintBatonVout(), 0);
     });
 
     it("getTransaction - mint transaction", async () => {
@@ -165,15 +165,15 @@ describe("grpc-bchrpc-web", () => {
         assert.equal(totalAmtIn.lt(totalAmtOut), true);
 
         // check token metadata
-        assert.equal(Buffer.from(res.getTokenMetadata()!.getType1()!.getTokenName()!).toString("utf8"), "Mistcoin");
-        assert.equal(Buffer.from(res.getTokenMetadata()!.getType1()!.getTokenTicker()).toString("utf8"), "MIST");
-        assert.equal(res.getTokenMetadata()!.getType1()!.getDecimals()!, 6);
-        assert.equal(Buffer.from(res.getTokenMetadata()!.getType1()!.getTokenDocumentUrl()).toString("utf8"), "https://mistcoin.org");
+        assert.equal(Buffer.from(res.getTokenMetadata()!.getV1Fungible()!.getTokenName()!).toString("utf8"), "Mistcoin");
+        assert.equal(Buffer.from(res.getTokenMetadata()!.getV1Fungible()!.getTokenTicker()).toString("utf8"), "MIST");
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getDecimals()!, 6);
+        assert.equal(Buffer.from(res.getTokenMetadata()!.getV1Fungible()!.getTokenDocumentUrl()).toString("utf8"), "https://mistcoin.org");
         assert.equal(Buffer.from(res.getTokenMetadata()!.getTokenId_asU8()!).toString("hex"), "d6876f0fce603be43f15d34348bb1de1a8d688e1152596543da033a060cff798");
 
         // verify current Mint baton txid / vout
-        assert.equal(res.getTokenMetadata()!.getType1()!.getMintBatonTxid().length === 32, true);
-        assert.equal(res.getTokenMetadata()!.getType1()!.getMintBatonVout(), 2);
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getMintBatonHash().length === 32, true);
+        assert.equal(res.getTokenMetadata()!.getV1Fungible()!.getMintBatonVout(), 2);
     });
 
     it("checkSlpTransaction - returns error on missing inputs or outputs", async () => {
@@ -193,13 +193,13 @@ describe("grpc-bchrpc-web", () => {
         const tm = res.getTokenMetadataList()![0];
 
         // check minting baton txid & vout
-        assert.equal(Buffer.from(tm.getType1()!.getMintBatonTxid_asU8().slice().reverse()).toString("hex"),
+        assert.equal(Buffer.from(tm.getV1Fungible()!.getMintBatonHash_asU8().slice().reverse()).toString("hex"),
             "33e504ca8d11d4d928f6439729a05074cd50ac8ba8d43570d452eff203d840e4");
-        assert.equal(tm.getType1()!.getMintBatonVout(), 2);
+        assert.equal(tm.getV1Fungible()!.getMintBatonVout(), 2);
 
         // check genesis properties
-        assert.equal(Buffer.from(tm.getType1()!.getTokenName()).toString("utf8"), "Fake USD");
-        assert.equal(Buffer.from(tm.getType1()!.getTokenTicker()).toString("utf8"), "USDF");
+        assert.equal(Buffer.from(tm.getV1Fungible()!.getTokenName()).toString("utf8"), "Fake USD");
+        assert.equal(Buffer.from(tm.getV1Fungible()!.getTokenTicker()).toString("utf8"), "USDF");
     });
 
     it("getTokenMetadata for NFT child token w/ group ID", async () => {
@@ -208,12 +208,12 @@ describe("grpc-bchrpc-web", () => {
         const tm = res.getTokenMetadataList()![0];
 
         // check minting baton txid & vout
-        assert.equal(Buffer.from(tm.getNft1Child()!.getGroupId()).toString("hex"),
+        assert.equal(Buffer.from(tm.getV1Nft1Child()!.getGroupId()).toString("hex"),
             "8501a019953ba16a20807a08a02d49a3441235132e4b2a14546c0bc2421a131e");
 
         // check genesis properties
-        assert.equal(Buffer.from(tm.getNft1Child()!.getTokenName()).toString("utf8"), "sharp pointy sword");
-        assert.equal(Buffer.from(tm.getNft1Child()!.getTokenTicker()).toString("utf8"), "");
+        assert.equal(Buffer.from(tm.getV1Nft1Child()!.getTokenName()).toString("utf8"), "sharp pointy sword");
+        assert.equal(Buffer.from(tm.getV1Nft1Child()!.getTokenTicker()).toString("utf8"), "");
     });
 
     it("getTokenMetadata for token with burned minting baton after Genesis", async () => {
@@ -221,7 +221,7 @@ describe("grpc-bchrpc-web", () => {
         const res = await client.getTokenMetadata([ tokenID ]);
         const tm = res.getTokenMetadataList()![0];
 
-        assert.equal(Buffer.from(tm.getType1()!.getMintBatonTxid_asU8()).toString("hex"), "");
+        assert.equal(Buffer.from(tm.getV1Fungible()!.getMintBatonHash_asU8()).toString("hex"), "");
     });
 
     it("getTokenMetadata for token with burned minting baton after Mint", async () => {
@@ -229,7 +229,7 @@ describe("grpc-bchrpc-web", () => {
         const res = await client.getTokenMetadata([ tokenID ]);
         const tm = res.getTokenMetadataList()![0];
 
-        assert.equal(Buffer.from(tm.getType1()!.getMintBatonTxid_asU8()).toString("hex"), "");
+        assert.equal(Buffer.from(tm.getV1Fungible()!.getMintBatonHash_asU8()).toString("hex"), "");
     });
 
     it("getTokenMetadata for token with burned", async () => {
@@ -237,7 +237,7 @@ describe("grpc-bchrpc-web", () => {
         const res = await client.getTokenMetadata([ tokenID ]);
         const tm = res.getTokenMetadataList()![0];
 
-        assert.equal(Buffer.from(tm.getType1()!.getMintBatonTxid_asU8()).toString("hex"), "");
+        assert.equal(Buffer.from(tm.getV1Fungible()!.getMintBatonHash_asU8()).toString("hex"), "");
     });
 
     it("getAddressUnspentOutputs", async () => {
@@ -255,11 +255,11 @@ describe("grpc-bchrpc-web", () => {
                 }
                 // console.log(`token id: ${Buffer.from(_token.getTokenId_asU8()).toString("hex")}`);
                 let divisibility: number;
-                if (_token.hasType1()) {
-                    divisibility = _token.getType1()!.getDecimals();
-                } else if (_token.hasNft1Group()) {
-                    divisibility = _token.getNft1Group()!.getDecimals();
-                } else if (_token.hasNft1Child()) {
+                if (_token.hasV1Fungible()) {
+                    divisibility = _token.getV1Fungible()!.getDecimals();
+                } else if (_token.hasV1Nft1Group()) {
+                    divisibility = _token.getV1Nft1Group()!.getDecimals();
+                } else if (_token.hasV1Nft1Child()) {
                     divisibility = 0;
                 } else {
                     throw Error("unknown error");
@@ -448,7 +448,7 @@ expectedParsingErrorsFromGoSlp.set("wrong number of chunks", [
     "(must be invalid: wrong number of params) GENESIS with extra token amount",
     "(must be invalid: wrong number of params) MINT with extra token amount",
 ]);
-expectedParsingErrorsFromGoSlp.set("impossible parsing result", [
+expectedParsingErrorsFromGoSlp.set("unrecognized transaction type", [
     "(must be invalid: bad value): transaction_type null",
     "(must be invalid: bad value): transaction_type 'INIT'",
     "(must be invalid: bad value): transaction_type 'TRAN'",

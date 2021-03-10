@@ -382,13 +382,13 @@ export class GrpcClient {
         txnHex,
         txn,
         requiredSlpBurns,
-        disableSlpErrors
+        useSpecValidityJudgement
     }: {
         txnBuf?: Buffer,
         txnHex?: string,
         txn?: Uint8Array,
         requiredSlpBurns?: bchrpc.SlpRequiredBurn[],
-        disableSlpErrors?: boolean
+        useSpecValidityJudgement?: boolean
     } = {}): Promise<bchrpc.CheckSlpTransactionResponse> {
         let tx: string|Uint8Array;
         const req = new bchrpc.CheckSlpTransactionRequest();
@@ -403,8 +403,8 @@ export class GrpcClient {
             throw Error("Most provide either Hex string, Buffer, or Uint8Array");
         }
 
-        if (disableSlpErrors) {
-            req.setDisableSlpBurnErrors(true);
+        if (useSpecValidityJudgement) {
+            req.setUseSpecValidityJudgement(true);
         } else if (requiredSlpBurns) {
             for (const burn of requiredSlpBurns) {
                 req.addRequiredSlpBurns(burn);
@@ -456,21 +456,6 @@ export class GrpcClient {
             }
 
             this.client.getTrustedSlpValidation(req, (err, data) => {
-                if (err !== null) { reject(err); } else { resolve(data!); }
-            });
-        });
-    }
-
-    public getBip44HdAddress({ xpub, isChange, addressIndex }:
-        {xpub: string, isChange: boolean, addressIndex: number }): Promise<bchrpc.GetBip44HdAddressResponse> {
-
-        return new Promise((resolve, reject) => {
-            const req = new bchrpc.GetBip44HdAddressRequest();
-            req.setXpub(xpub);
-            req.setChange(isChange);
-            req.setAddressIndex(addressIndex);
-
-            this.client.getBip44HdAddress(req, (err, data) => {
                 if (err !== null) { reject(err); } else { resolve(data!); }
             });
         });
