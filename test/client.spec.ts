@@ -1,8 +1,7 @@
 import Big from "big.js";
 import { Buffer } from "buffer";
 import { assert } from "chai";
-import { GetParsedSlpScriptResponse, GetUnspentOutputResponse,
-    grpc, GrpcClient, NodeHttpTransport } from "../src/index";
+import { GetSlpParsedScriptResponse, GetUnspentOutputResponse, grpc, GrpcClient, NodeHttpTransport } from "../src/index";
 grpc.setDefaultTransport(NodeHttpTransport());
 
 const scriptUnitTestData: SlpMsgTest[] = require("slp-unit-test-data/script_tests.json");
@@ -369,7 +368,7 @@ describe("grpc-bchrpc-web", () => {
                 const script = Buffer.from(test.script, "hex");
                 const eCode = test.code;
                 if (eCode) {
-                    let resp: GetParsedSlpScriptResponse;
+                    let resp: GetSlpParsedScriptResponse;
                     try {
                         resp = await client.getParsedSlpScript(script);
                     } catch (error) {
