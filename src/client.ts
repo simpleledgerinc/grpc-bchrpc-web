@@ -8,9 +8,7 @@ export class GrpcClient {
 
     constructor({ url, testnet = false, options }:
         { url?: string; testnet?: boolean; options?: object } = {}) {
-        if (!url && !testnet) {
-            url = "https://bchd.greyh.at:8335";
-        } else if (!url) {
+        if (!url) {
             url = "https://bchd-testnet.greyh.at:18335";
         }
         if (!options) {

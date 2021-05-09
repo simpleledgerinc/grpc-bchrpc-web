@@ -1,6 +1,6 @@
 # A BCHD gRPC client for the web
 
-This package provides a gRPC client for connecting to [BCHD](https://bchd.cash) from web applications.  Example usage can be found at https://bchd.fountainhead.cash.  SLP support is provided when the full node has SLP index enabled, which is currently under development [here](https://github.com/simpleledgerinc/bchd).
+This package provides a gRPC client for connecting to [BCHD](https://bchd.cash) from web applications.
 
 ** - For node.js applications that need to connect to a local BCHD instance you need to use the `grpc-bchrpc-node` npm package.
 
@@ -33,19 +33,6 @@ let txid = "11556da6ee3cb1d14727b3a8f4b37093b6fecd2bc7d577a02b4e98b7be58a7e8";
 let res = await grpc.getRawTransaction({ hash: txid, reversedHashOrder: true });
 console.log(Buffer.from(res.getTransaction_asU8()).toString('hex'));
 ```
-
-
-
-## BCHD Full Nodes w/ gRPC
-
-Mainnet:
-* https://bchd.greyh.at:8335
-* https://bchd.imaginary.cash:8335
-* https://bchd.fountainhead.cash:443
-
-Testnet:
-* https://bchd.greyh.at:18335
-* https://bchd-testnet.greyh.at:18335
 
 
 
